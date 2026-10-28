@@ -1,5 +1,11 @@
 # Änderungen
 
+## 1.5.1 – Reihenfolge (28.10.2026)
+- Reihenfolge der Pläne einstellbar: „Reihenfolge ändern“ über der Liste „Pläne“, dann ↑ / ↓; „Als Nächstes“ folgt dieser Reihenfolge
+- Laufendes Training: Übung im Menü ⋯ „Nach oben“ und neu „Nach unten“
+- Plan bearbeiten: ↑ beim ersten und ↓ beim letzten Eintrag gesperrt
+- Service Worker `satzbau-v5`
+
 Die Versionen 1.3 bis 1.5 erscheinen gemeinsam (28.10.2026).
 
 ## 1.5 – Trainingsphasen (F11)

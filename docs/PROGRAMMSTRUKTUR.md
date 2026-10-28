@@ -1,6 +1,6 @@
 # Satzbau – Programmstruktur
 
-Stand: Version 1.5 (28.10.2026). Zeilenangaben beziehen sich auf `index.html` in dieser Version.
+Stand: Version 1.5.1 (28.10.2026). Zeilenangaben beziehen sich auf `index.html` in Version 1.5 (1.5.1 verschiebt sie um wenige Zeilen).
 
 ## 1. Überblick
 
@@ -27,10 +27,10 @@ Browser (Chrome/Android)
 | `datenschutz.html` | 6 KB | Datenschutzerklärung (Verantwortlicher, lokale Speicherung, GitHub Pages, Rechte) |
 | `fonts/` | 6 × ca. 22 KB + `OFL.txt` | Barlow 400/500/600, Barlow Condensed 500/600/700, Teilmenge latin |
 | `manifest.webmanifest` | 1,3 KB | Name, Farben, Icons, Schnellzugriffe (Training, Übersicht, Verlauf) |
-| `sw.js` | 1,5 KB | Service Worker, Cache `satzbau-v4` |
+| `sw.js` | 1,5 KB | Service Worker, Cache `satzbau-v5` |
 | `icons/` | 4 Dateien | `favicon.svg`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` |
 | `README.md` | | Funktionen, Veröffentlichung, Installation, Datenhinweise |
-| `CHANGELOG.md` | | Versionen 1.0–1.5 |
+| `CHANGELOG.md` | | Versionen 1.0–1.5.1 |
 | `docs/PROGRAMMSTRUKTUR.md` | | dieses Dokument |
 | `docs/FEHLENDE-FUNKTIONEN.md` | | Funktionsplanung: umgesetzt, offen, Abweichungen |
 | `.nojekyll` | leer | GitHub Pages liefert Dateien unverändert aus |
@@ -86,7 +86,7 @@ Ein globales Objekt `S` hält alles. `saveLocal` speichert mit 300 ms Verzögeru
 S = {
   meta: {                                // IndexedDB: Bereich "meta", Schlüssel "meta"
     kind: 'meta',
-    templates: [ { id, name, farbe:1–6, kurz?, items: [ { ex, sets, repMin, repMax } ] } ],
+    templates: [ { id, name, farbe:1–6, kurz?, items: [ { ex, sets, repMin, repMax } ] } ],   // Reihenfolge = Reihenfolge für „Als Nächstes“ (nextTemplate, leere Pläne übersprungen)
     exercises: { <ex-id>: { name?, group?, typ?, geraetNr, einstellung, schritt,
                             repMin, repMax, pause, notiz?, hidden? } },
     restSec: 90, restTyp: { maschine|kabel|frei: Sekunden },
@@ -158,10 +158,10 @@ Alle Schaltflächen tragen `data-a="<aktion>"`; ein Klick-Handler ruft die Funkt
 |---|---|
 | Navigation | `tab`, `back`, `w-goto`, `ex-open`, `w-open`, `metric`, `chart-erh`, `rng-mode`, `rng-nav`, `day-open`, `planung` |
 | Training | `start`, `start-empty`, `tick`, `kg-step`, `rep-step`, `set-add`, `set-del`, `finish`, `discard` |
-| Übung im Training | `blk-add`, `blk-menu`, `blk-notes`, `blk-swap`, `blk-up`, `blk-rm`, `pick` |
+| Übung im Training | `blk-add`, `blk-menu`, `blk-notes`, `blk-swap`, `blk-up`, `blk-down`, `blk-rm`, `pick` |
 | Geräte | `ex-new`, `ex-create`, `ex-hide`, `ex-del`, `ex-showhidden`, `gear`, `gear-save`, `kern-toggle` |
 | Training bearbeiten | `w-edit`, `we-save`, `we-cancel`, `we-set-add`, `we-set-del`, `we-blk-add`, `we-blk-del`, `we-swap` |
-| Pläne | `tpl-new`, `tpl-edit`, `tpl-del`, `tpl-farbe`, `ti-add`, `ti-up`, `ti-down`, `ti-del` |
+| Pläne | `tpl-new`, `tpl-edit`, `tpl-del`, `tpl-farbe`, `tpl-sort`, `tpl-up`, `tpl-down`, `ti-add`, `ti-up`, `ti-down`, `ti-del` |
 | Planung | `tag-toggle`, `zy-vorlage`, `zy-einschub`, `zy-skip`, `zy-reset`, `zy-add`, `zy-del`, `zy-up`, `zy-down` |
 | Pause | `rest-add`, `rest-stop` |
 | Körpergewicht | `body-quick`, `body-save`, `body-del` |
@@ -236,7 +236,7 @@ Pläne ohne gültige Farbe bekommen die erste freie Farbe 1–6. Trainings ohne 
 
 | Anfrage | Strategie |
 |---|---|
-| eigene Dateien | Netz zuerst, Kopie in Cache `satzbau-v4`; offline aus dem Cache, Navigation fällt auf `index.html` zurück |
+| eigene Dateien | Netz zuerst, Kopie in Cache `satzbau-v5`; offline aus dem Cache, Navigation fällt auf `index.html` zurück |
 | fremde Server | werden nicht angefragt und nicht abgefangen |
 
 Beim Installieren werden `SHELL` (App, Datenschutzseite, Manifest, Icons, Schriften) vorab geladen. Ändert sich die Dateiliste, `SHELL` anpassen und `CACHE` hochzählen.

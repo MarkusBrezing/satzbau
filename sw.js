@@ -1,7 +1,7 @@
 /* Service Worker für Satzbau: App läuft offline.
    Eigene Dateien: erst Netz (neue Version kommt sofort an), ohne Netz aus dem Cache.
    Ab 1.4 gibt es keine Zugriffe auf fremde Server mehr (Schriften liegen in fonts/). */
-const CACHE = 'satzbau-v4';
+const CACHE = 'satzbau-v5';
 const SHELL = [
   './', 'index.html', 'datenschutz.html', 'manifest.webmanifest',
   'icons/favicon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png',

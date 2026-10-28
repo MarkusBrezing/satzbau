@@ -2,7 +2,7 @@
 
 Trainingstagebuch fürs Fitnessstudio (Geräte nach McFit-Ausstattung, eigene Geräte ergänzbar). Läuft als installierbare Web-App (PWA) auf Android: eigenes Symbol, eigenes Fenster ohne Adressleiste, auch ohne Netz nutzbar. Ohne Konto, ohne Tracking, alle Daten bleiben auf dem Gerät.
 
-App: https://markusbrezing.github.io/satzbau/ · Version 1.5 · [Änderungen](CHANGELOG.md) · [Datenschutz](datenschutz.html)
+App: https://markusbrezing.github.io/satzbau/ · Version 1.5.1 · [Änderungen](CHANGELOG.md) · [Datenschutz](datenschutz.html)
 
 ## Funktionen
 
@@ -84,7 +84,7 @@ git push -u origin main
 
 ## Updates
 
-Der Service Worker holt eigene Dateien zuerst aus dem Netz und nutzt den Cache nur ohne Verbindung. Eine neue Version erscheint daher beim nächsten Öffnen mit Internet. Sieht die App nach einem Update veraltet aus, einmal schließen und neu öffnen. Ändert sich die Dateiliste (neue Icons, Schriften o. ä.), in `sw.js` die Liste `SHELL` anpassen und den Namen `CACHE` hochzählen (derzeit `satzbau-v4`).
+Der Service Worker holt eigene Dateien zuerst aus dem Netz und nutzt den Cache nur ohne Verbindung. Eine neue Version erscheint daher beim nächsten Öffnen mit Internet. Sieht die App nach einem Update veraltet aus, einmal schließen und neu öffnen. Ändert sich die Dateiliste (neue Icons, Schriften o. ä.), in `sw.js` die Liste `SHELL` anpassen und den Namen `CACHE` hochzählen (derzeit `satzbau-v5`).
 
 ## Hinweis zum Cloud-Speicher
 

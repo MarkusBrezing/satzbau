@@ -88,6 +88,11 @@ p{margin:.4rem 0}
 .plans li{display:flex;align-items:center;gap:.6rem;padding:.7rem 0;border-bottom:1px solid var(--line)}
 .plans li .grow{flex:1;min-width:0}
 .plans .pname{font:600 1.25rem/1.1 var(--num)}
+.h2row{display:flex;align-items:baseline;justify-content:space-between;gap:.6rem}
+.plans .ctl{display:flex;gap:.25rem}
+.plans .ctl button,.titem .ctl button{font-size:1.05rem}
+.plans .ctl button{width:2.6rem;height:2.6rem;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);color:var(--ink)}
+.plans .ctl button:disabled,.titem .ctl button:disabled{opacity:.3}
 
 /* Aktives Training */
 .wbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 3.05rem);z-index:4;background:var(--bg);display:flex;align-items:center;gap:.6rem;padding:.6rem 0}
@@ -338,7 +343,7 @@ function clock(ms){ const s=Math.max(0,Math.floor(ms/1000)); const h=Math.floor(
    Ab 1.4 ist die Browser-Datenbank IndexedDB „satzbau“ der Hauptspeicher (Bereiche meta, workouts, zustand).
    localStorage „kraftbuch.v1“ wird als Spiegelkopie mitgeschrieben (soweit Platz) und ist der Rückfall,
    wenn IndexedDB fehlt. Der Stand vor dem Umzug bleibt unter „kraftbuch.v1.vor-1.4“ erhalten. */
-const APP_VERSION='1.5';
+const APP_VERSION='1.5.1';
 const LS='kraftbuch.v1', LS_ALT='kraftbuch.v1.vor-1.4', LS_MIG='satzbau.umzug';
 let S={meta:{kind:'meta',templates:[],exercises:{},restSec:90,restTyp:{},body:[],kern:[],kernSet:false,planTage:[1,3,5],zyklus:{aktiv:false,start:null,wiederholen:true,phasen:[],anker:[]}},workouts:{},active:null,pending:{},deleted:{},metaDirty:false,lastBackup:null,snooze:{}};
 let view={tab:'training',sub:null};
@@ -740,8 +745,11 @@ function vTraining(){
     h+=`<section class="next"><div class="next-name">Erster Plan</div><p>Lege einen Trainingsplan mit deinen Geräten an. Danach schlägt Satzbau jedes Mal den nächsten Plan und das Gewicht vor.</p><button class="btn primary wide" data-a="tpl-new">Plan anlegen</button></section>`;
   }
   h+=redHint(ph)+backupHint();
-  h+=`<h2>Pläne</h2><ul class="list plans">${S.meta.templates.map(x=>{ const last=finished().find(w=>w.templateId===x.id);
-    return `<li><span class="pk" style="--pc:${pcVar(x.farbe)}">${esc(planKurz(x))}</span><div class="grow"><div class="pname">${esc(x.name)}</div><div class="small muted">${x.items.length} Übungen${last?' · zuletzt '+dayFmt.format(last.start):''}</div></div><button class="btn" data-a="tpl-edit" data-id="${esc(x.id)}">Bearbeiten</button><button class="btn" data-a="start" data-id="${esc(x.id)}">Starten</button></li>`; }).join('')}</ul>
+  const TP=S.meta.templates, sortOn=planSort&&TP.length>1;
+  h+=`<div class="h2row"><h2>Pläne</h2>${TP.length>1?`<button class="btn ghost" data-a="tpl-sort" aria-pressed="${sortOn}">${sortOn?'Fertig':'Reihenfolge ändern'}</button>`:''}</div>${sortOn?'<p class="small muted" style="margin:-.3rem 0 .3rem">„Als Nächstes“ folgt dieser Reihenfolge: nach dem zuletzt trainierten Plan kommt der darunter, nach dem letzten wieder der erste.</p>':''}<ul class="list plans">${TP.map((x,i)=>{ const last=finished().find(w=>w.templateId===x.id);
+    const btns=sortOn?`<div class="ctl"><button data-a="tpl-up" data-i="${i}" ${i===0?'disabled':''} aria-label="${esc(x.name)} nach oben">↑</button><button data-a="tpl-down" data-i="${i}" ${i===TP.length-1?'disabled':''} aria-label="${esc(x.name)} nach unten">↓</button></div>`
+      :`<button class="btn" data-a="tpl-edit" data-id="${esc(x.id)}">Bearbeiten</button><button class="btn" data-a="start" data-id="${esc(x.id)}">Starten</button>`;
+    return `<li><span class="pk" style="--pc:${pcVar(x.farbe)}">${esc(planKurz(x))}</span><div class="grow"><div class="pname">${esc(x.name)}</div><div class="small muted">${x.items.length} Übungen${last?' · zuletzt '+dayFmt.format(last.start):''}</div></div>${btns}</li>`; }).join('')}</ul>
     <div class="row" style="margin-top:.8rem"><button class="btn" data-a="tpl-new">Neuer Plan</button><button class="btn" data-a="start-empty">Freies Training</button><button class="btn" data-a="body-quick">Körpergewicht${bodyList().length?' · '+fmt(bodyList().slice(-1)[0].kg)+' kg':''}</button></div>`;
   return h;
 }
@@ -845,7 +853,7 @@ function vUebungen(){
     h+=`<div class="grp" style="--plate:${PLATE[g]}">${g}</div><ul class="list exl">${xs.map(e=>{ const l=lastSession(e.id); return `<li><button data-a="ex-open" data-id="${esc(e.id)}"><span>${isKern(e.id)?'★ ':''}${esc(e.name)}<br><span class="sub">${TYP[e.typ]}${e.geraetNr?' · '+esc(e.geraetNr):''}${e.einstellung?' · '+esc(e.einstellung):''}${e.custom?' · eigenes Gerät':''}${e.hidden?' · ausgeblendet':''}</span>${ampel(e.id).c!=='neu'?'<br>'+ampPill(ampel(e.id)):''}</span><span class="sub" style="display:flex;align-items:center;gap:.5rem">${spark(e.id)}${l?fmt(Math.max(...l.sets.map(s=>s.kg||0)))+' kg':''}</span></button></li>`; }).join('')}</ul>`; }
   return h;
 }
-let chartMetric='e', chartErh=true;
+let chartMetric='e', chartErh=true, planSort=false;
 const METRICS={e:'1RM geschätzt',k:'Topgewicht',v:'Volumen'};
 function exSeries(ex,max,mitErh){ return sessionsFor(ex,null,!mitErh).slice(0,max||40).reverse().map(({w,sets})=>({t:w.start,erh:isErh(w),e:Math.max(...sets.map(s=>e1rm(s.kg,s.reps))),k:Math.max(...sets.map(s=>s.kg||0)),v:sets.reduce((n,s)=>n+(s.kg||0)*s.reps,0)})); }
 function spark(ex){
@@ -1057,7 +1065,7 @@ function vTemplate(id){
     <label class="f" for="t-name">Name</label><input class="in" id="t-name" data-tf="name" value="${esc(t.name)}">
     <label class="f">Farbe in Kalender und Verlauf</label><div class="swatches" role="group" aria-label="Farbe des Plans">${[1,2,3,4,5,6].map(f=>`<button data-a="tpl-farbe" data-v="${f}" style="--pc:var(--pl-${f})" aria-pressed="${t.farbe===f}" aria-label="Farbe ${f}${S.meta.templates.some(x=>x!==t&&x.farbe===f)?', auch von einem anderen Plan genutzt':''}"></button>`).join('')}</div>
     <label class="f" for="t-kurz">Kürzel im Kalender (bis 3 Zeichen)</label><input class="in" id="t-kurz" data-tf="kurz" maxlength="3" value="${esc(t.kurz||'')}" placeholder="${esc(planKurz({name:t.name}))}" style="max-width:6rem">
-    <h3>Übungen</h3>${t.items.map((it,i)=>{ const e=getEx(it.ex); return `<div class="titem" style="--plate:${PLATE[e.group]}"><b>${esc(e.name)}</b><div class="ctl"><button data-a="ti-up" data-i="${i}" aria-label="Nach oben">↑</button><button data-a="ti-down" data-i="${i}" aria-label="Nach unten">↓</button><button data-a="ti-del" data-i="${i}" aria-label="Entfernen">×</button></div>
+    <h3>Übungen</h3>${t.items.map((it,i)=>{ const e=getEx(it.ex); return `<div class="titem" style="--plate:${PLATE[e.group]}"><b>${esc(e.name)}</b><div class="ctl"><button data-a="ti-up" data-i="${i}" ${i===0?'disabled':''} aria-label="${esc(e.name)} nach oben">↑</button><button data-a="ti-down" data-i="${i}" ${i===t.items.length-1?'disabled':''} aria-label="${esc(e.name)} nach unten">↓</button><button data-a="ti-del" data-i="${i}" aria-label="Entfernen">×</button></div>
       <div class="nums"><input data-tif="sets" data-i="${i}" inputmode="numeric" value="${it.sets}" aria-label="Sätze"> Sätze à <input data-tif="repMin" data-i="${i}" inputmode="numeric" value="${it.repMin}" aria-label="Wdh. min"> – <input data-tif="repMax" data-i="${i}" inputmode="numeric" value="${it.repMax}" aria-label="Wdh. max"> Wdh.</div></div>`; }).join('')}
     <button class="btn wide" data-a="ti-add" style="margin-top:.4rem">+ Übung hinzufügen</button>
     <div class="row" style="margin-top:1.2rem"><button class="btn primary" data-a="back">Fertig</button><button class="btn danger" data-a="tpl-del">Plan löschen</button></div>`;
@@ -1120,10 +1128,11 @@ const A={
   'set-del':el=>{ const b=S.active.exercises[+el.dataset.b]; b.sets.pop(); saveLocalNow(); render(); },
   'blk-add':()=>pickExercise(id=>{ S.active.exercises.push(newBlock(id,undefined,undefined,undefined,S.active.phase||null)); saveLocalNow(); closeSheet(); render(); }),
   'blk-menu':el=>{ const bi=+el.dataset.b, b=S.active.exercises[bi];
-    openSheet(`<h2>${esc(getEx(b.ex).name)}</h2><ul class="list pick"><li><button data-a="blk-notes" data-b="${bi}">Notiz hinzufügen</button></li><li><button data-a="blk-swap" data-b="${bi}">Gerät tauschen</button></li><li><button data-a="blk-up" data-b="${bi}">Nach oben</button></li><li><button data-a="blk-rm" data-b="${bi}" class="danger">Aus dem Training entfernen</button></li></ul><button class="btn" data-a="close" style="margin-top:.6rem">Schließen</button>`); },
+    openSheet(`<h2>${esc(getEx(b.ex).name)}</h2><ul class="list pick"><li><button data-a="blk-notes" data-b="${bi}">Notiz hinzufügen</button></li><li><button data-a="blk-swap" data-b="${bi}">Gerät tauschen</button></li>${bi>0?`<li><button data-a="blk-up" data-b="${bi}">Nach oben</button></li>`:''}${bi<S.active.exercises.length-1?`<li><button data-a="blk-down" data-b="${bi}">Nach unten</button></li>`:''}<li><button data-a="blk-rm" data-b="${bi}" class="danger">Aus dem Training entfernen</button></li></ul><button class="btn" data-a="close" style="margin-top:.6rem">Schließen</button>`); },
   'blk-notes':el=>{ const b=S.active.exercises[+el.dataset.b]; b.notes=b.notes||' '; closeSheet(); render(); const t=document.querySelector(`[data-f="bnotes"][data-b="${el.dataset.b}"]`); if(t){ t.value=''; b.notes=''; t.focus(); } },
   'blk-swap':el=>{ const bi=+el.dataset.b; pickExercise(id=>{ const old=S.active.exercises[bi]; const nb=newBlock(id,old.sets.length,old.repMin,old.repMax,S.active.phase||null,true); S.active.exercises[bi]=nb; saveLocalNow(); closeSheet(); render(); },'Gerät tauschen'); },
   'blk-up':el=>{ const i=+el.dataset.b, a=S.active.exercises; if(i>0){ [a[i-1],a[i]]=[a[i],a[i-1]]; } saveLocalNow(); closeSheet(); render(); },
+  'blk-down':el=>{ const i=+el.dataset.b, a=S.active.exercises; if(i<a.length-1){ [a[i+1],a[i]]=[a[i],a[i+1]]; } saveLocalNow(); closeSheet(); render(); },
   'blk-rm':el=>{ S.active.exercises.splice(+el.dataset.b,1); saveLocalNow(); closeSheet(); render(); },
   gear:el=>{ const e=getEx(el.dataset.id);
     openSheet(`<h2>${esc(e.name)}</h2><label class="f" for="g-nr">Geräte-Nr.</label><input class="in" id="g-nr" value="${esc(e.geraetNr)}" placeholder="z. B. A12"><label class="f" for="g-st">Einstellung</label><input class="in" id="g-st" value="${esc(e.einstellung)}" placeholder="z. B. Sitz 5, Lehne 3"><div class="row" style="margin-top:.8rem"><button class="btn primary" data-a="gear-save" data-id="${esc(e.id)}">Speichern</button><button class="btn" data-a="close">Abbrechen</button></div>`); },
@@ -1207,6 +1216,9 @@ const A={
   back:()=>{ view.sub=null; render(); window.scrollTo(0,0); },
   'tpl-new':()=>{ const t={id:'t-'+Date.now().toString(36),name:'Plan '+String.fromCharCode(65+S.meta.templates.length%26),items:[]}; S.meta.templates.push(t); ensurePlanColors(); metaChanged(); view={tab:'training',sub:'t:'+t.id}; render(); },
   'tpl-edit':el=>{ view={tab:'training',sub:'t:'+el.dataset.id}; render(); window.scrollTo(0,0); },
+  'tpl-sort':()=>{ planSort=!planSort; render(); },
+  'tpl-up':el=>{ const a=S.meta.templates, i=+el.dataset.i; if(i>0){ [a[i-1],a[i]]=[a[i],a[i-1]]; metaChanged(); render(); } },
+  'tpl-down':el=>{ const a=S.meta.templates, i=+el.dataset.i; if(i<a.length-1){ [a[i+1],a[i]]=[a[i],a[i+1]]; metaChanged(); render(); } },
   'tpl-del':()=>{ const id=view.sub.slice(2); ask('Plan löschen? Der Verlauf bleibt erhalten.','Löschen',true).then(ok=>{ closeSheet(); if(ok){ S.meta.templates=S.meta.templates.filter(t=>t.id!==id); metaChanged(); view.sub=null; render(); } }); },
   'ti-add':()=>{ const t=curTpl(); pickExercise(id=>{ const e=getEx(id); t.items.push({ex:id,sets:3,repMin:e.repMin,repMax:e.repMax}); metaChanged(); closeSheet(); render(); }); },
   'ti-up':el=>{ const a=curTpl().items, i=+el.dataset.i; if(i>0){ [a[i-1],a[i]]=[a[i],a[i-1]]; metaChanged(); render(); } },
