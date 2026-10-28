@@ -2,3 +2,7 @@
 Thumbs.db
 node_modules/
 *.swp
+# private Trainingsdaten nie veröffentlichen
+satzbau-sicherung*.json
+satzbau-20*.json
+satzbau-20*.csv

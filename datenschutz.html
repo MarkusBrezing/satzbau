@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Datenschutz – Satzbau</title>
+<meta name="theme-color" content="#E6E9EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14181C" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<style>
+@font-face{font-family:"Barlow";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/barlow-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/barlow-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlow-condensed-latin-700-normal.woff2) format("woff2")}
+:root{--bg:#E6E9EC;--surface:#FFFFFF;--ink:#1B2127;--muted:#5B6570;--line:#CBD1D6;--link:#1E5AA6;color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#14181C;--surface:#1E242A;--ink:#E9EDF1;--muted:#9BA6B1;--line:#353E47;--link:#6FA2E6;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14181C;--surface:#1E242A;--ink:#E9EDF1;--muted:#9BA6B1;--line:#353E47;--link:#6FA2E6;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:46rem;margin:0 auto;padding:1rem 1rem 3rem}
+h1{font:700 2rem/1.1 "Barlow Condensed","Arial Narrow",sans-serif;margin:1rem 0 .4rem}
+h2{font:700 1.35rem/1.2 "Barlow Condensed","Arial Narrow",sans-serif;margin:1.6rem 0 .4rem}
+a{color:var(--link)}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.8rem 0}
+.muted{color:var(--muted)}
+ul{padding-left:1.2rem}
+li{margin:.2rem 0}
+.back{display:inline-block;margin-top:.4rem}
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="./">‹ Zurück zu Satzbau</a>
+<h1>Datenschutzerklärung</h1>
+<p class="muted">Stand: 28. Oktober 2026 · gilt für die Web-App Satzbau unter markusbrezing.github.io/satzbau</p>
+
+<div class="box">
+<b>Kurz gesagt</b>
+<ul>
+<li>Satzbau funktioniert ohne Benutzerkonto.</li>
+<li>Deine Trainings, Pläne, Geräteeinstellungen und dein Körpergewicht werden nur auf deinem Gerät gespeichert. Sie werden nicht an mich oder an Dritte übertragen.</li>
+<li>Keine Cookies, kein Tracking, keine Analyse, keine Werbung. Schriften und alle anderen Dateien kommen vom selben Server wie die App.</li>
+<li>Beim Aufruf der Seite verarbeitet der Hoster GitHub technisch notwendige Zugriffsdaten (zum Beispiel die IP-Adresse).</li>
+</ul>
+</div>
+
+<h2>1. Verantwortlicher</h2>
+<p>Markus Brezing<br>E-Mail: <a href="mailto:markus.brezing@outlook.de">markus.brezing@outlook.de</a></p>
+
+<h2>2. Speicherung auf deinem Gerät</h2>
+<p>Satzbau speichert alle Eingaben in deinem Browser: in der Browser-Datenbank IndexedDB und zusätzlich als Kopie im Browser-Speicher (localStorage). Dazu gehören Trainingspläne, Trainings mit Sätzen, Gewichten und Wiederholungen, Notizen, Geräteangaben, Einstellungen, der Trainingsverlauf mit Phasen und dein Körpergewicht.</p>
+<p>Diese Daten verlassen dein Gerät nicht. Ich habe keinen Zugriff darauf. Körpergewicht und Trainingsdaten können Rückschlüsse auf deine Gesundheit zulassen; gerade deshalb bleiben sie ausschließlich bei dir.</p>
+<p>Die Speicherung ist technisch erforderlich, damit die App die von dir gewünschte Funktion erfüllen kann (§ 25 Abs. 2 Nr. 2 TDDDG). Es werden keine Kennungen zur Wiedererkennung oder zu Werbezwecken angelegt.</p>
+<p>Damit die App auch ohne Internet funktioniert, speichert ein sogenannter Service Worker die Programmdateien (HTML, Schriften, Symbole) im Browser-Cache. Diese Dateien enthalten keine personenbezogenen Daten.</p>
+
+<h2>3. Sicherung, Export und Import</h2>
+<p>Wenn du unter „Daten“ eine Sicherung (JSON) oder Tabelle (CSV) erstellst, wird die Datei auf deinem Gerät erzeugt und im Ordner Downloads abgelegt. Beim Einspielen einer Sicherung oder eines Strong-Exports wird die Datei nur lokal gelesen. Es findet keine Übertragung statt. Was du mit einer exportierten Datei machst (zum Beispiel weitergeben), entscheidest du selbst.</p>
+
+<h2>4. Hosting bei GitHub Pages</h2>
+<p>Die App wird über GitHub Pages bereitgestellt. Anbieter ist die GitHub, Inc., 88 Colin P. Kelly Jr. St., San Francisco, CA 94107, USA. Beim Aufruf der Seite verarbeitet GitHub technisch notwendige Daten, insbesondere die IP-Adresse, Datum und Uhrzeit des Abrufs, die abgerufene Datei sowie Angaben zu Browser und Gerät. Das dient der Auslieferung der Seite und der Sicherheit des Dienstes.</p>
+<p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; mein berechtigtes Interesse liegt in einer sicheren und zuverlässigen Bereitstellung der App. Dabei können Daten in die USA übermittelt werden. GitHub gibt an, das EU-U.S. Data Privacy Framework einzuhalten. Ich erhalte von GitHub keine Zugriffsdaten der Besucher. Weitere Informationen: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">Datenschutzerklärung von GitHub</a>.</p>
+
+<h2>5. Löschen deiner Daten</h2>
+<ul>
+<li>In der App: „Daten“ → „Alle Daten auf diesem Gerät löschen“.</li>
+<li>Im Browser: die Website-Daten für markusbrezing.github.io löschen.</li>
+<li>Beim Deinstallieren der App die gespeicherten Daten mit entfernen.</li>
+</ul>
+<p>Ohne vorherige Sicherung lassen sich gelöschte Daten nicht wiederherstellen.</p>
+
+<h2>6. Deine Rechte</h2>
+<p>Du hast das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21). Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren (Art. 77).</p>
+<p>Da die App-Daten nur auf deinem Gerät liegen, kannst du sie jederzeit selbst einsehen, exportieren, ändern und löschen. Zu den Zugriffsdaten beim Hoster wende dich bitte direkt an GitHub.</p>
+
+<h2>7. Änderungen</h2>
+<p>Kommen Funktionen hinzu, die Daten übertragen (geplant ist ein freiwilliger Abgleich über das eigene Google Drive), wird diese Erklärung vorher angepasst.</p>
+
+<p style="margin-top:2rem"><a href="./">‹ Zurück zu Satzbau</a></p>
+</main>
+</body>
+</html>
